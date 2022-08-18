@@ -1,0 +1,27 @@
+2K Video:
+We'll start with the simplest format, as a way to describe how the consumer electronics (CE) companies are shifting the definition away from vertical lines of resolution to something more nebulous.
+
+If 1080p has 1080 lines of vertical resolution, one would think that the 2K displays have 2,000 lines of vertical resolution, right? Not so fast: 2K is an incremental bump above 1080p. In fact, 2K doesn't even change the vertical resolution, leaving it at 1080 lines, and only increases the horizontal resolution to a 2048 pixel width.
+
+Run the math and you'll find that the increase from 1920 horizontal pixels to 2048 horizontal pixels is a whopping 3.43 per cent increase. Hardly worth chucking the 1080p "True HD" monitor for a 2K one.
+
+The reason for this confusion lies mainly in the primary purpose of 2K resolutions. To date, 2K has primarily been used for projection within movie theaters, which require a slightly different aspect ratio from consumer HDTVs and computer monitors.
+
+While consumer displays use a 16:9 aspect ratio (or 1.777:1 if converted to the lowest common denominator), the Digital Cinema Initiative (DCI) backed by the major Hollywood studios uses a 17:9 aspect ratio (approximately 1.85:1) that better aligns with several of 35mm and 70mm films formats used to shoot and project movies.
+
+As such, the DCI termed the 2048 x 1080 resolution as 2K, and the name stuck even when it came to consumer applications. It's no wonder that most consumers with decent home theater systems feel like they're getting an equal or better experience to the movie theater: with the exception of a few more horizontal pixels, the image is exactly the same resolution in 1080p and 2K, and the pixel density (measured in PPI or pixels per inch) is quite a bit denser on a consumer 1080p display.
+
+Another way to look at it is overall pixels: 1920 x 1080 equals 2,073,600 pixels, while 2K at 2048 x 1080 equals 2,211,840. The difference is 138,240 pixels, and if the pixels were represented as megapixels (Mpx, the typical way we gauge still camera resolutions) the change between 1080p and 2K would be approximately 0.13 Mpx (2.1 versus 2.2 Mpx).
+
+
+4K Video:
+Now that we've looked at 2K, what about 4K? Does it offer resolution benefits beyond 2K and 1080p?
+
+There are three 4K resolutions to consider, each with a different aspect ratio.
+
+Let's consider, first, the DCI version of 4K. The film industry likes to shoot at resolutions at least 3-4 times greater than what it will project, so the DCI came out with a 4K specification at the same time it came out with the 2K display specification.
+
+DCI 4K has 2160 vertical lines of resolution, which is double that of 1080p. So far so good, but what about the horizontal resolution? It clocks in at 4096 pixels. All told, that's 8,847,360 pixels, or 8.84 Mpx.
+
+Running the numbers, that means DCI 4K is 4.26 times the resolution of 1080p and exactly 4 times the resolution of 2K. The difference, as we mentioned above, is the aspect ratios of 1080p (16:9) and DCI 2K / 4K (17:9).
+
