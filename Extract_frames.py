@@ -10,13 +10,15 @@ import cv2
 import os
 
 # Read the video from specified path
-vid = cv2.VideoCapture("/home/ashrith/Videos/4K Video Downloader/Vid1.mp4")
+file = "V5"
+vid = cv2.VideoCapture("./videos/" + str(file) + ".mp4")
+store = './transaction_data'
+frame_rate = 100
 
 try:
-
     # creating a folder named data
-    if not os.path.exists('data'):
-        os.makedirs('data')
+    if not os.path.exists(store):
+        os.makedirs(store)
 
 # if not created then raise error
 except OSError:
@@ -26,17 +28,16 @@ except OSError:
 currentframe = 0
 
 while (True):
-
     # reading from frame
     success, frame = vid.read()
 
     if success:
-            # Extracting every 60th frame
-        if currentframe % 60 == 0:
+        # Extracting every 'frame_rate' number of frames
+        if currentframe % frame_rate == 0:
             # continue creating images until video remains
-            name = './data/frame' + str(currentframe) + '.jpg'
+            name = str(store) + '/frame' + '_' + str(file) + \
+                '_' + str(currentframe) + '.jpg'
             print('Creating...' + name)
-
             # writing the extracted images
             cv2.imwrite(name, frame)
 
