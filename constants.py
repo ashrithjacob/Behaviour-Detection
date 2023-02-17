@@ -2,7 +2,6 @@ import numpy as np
 from hyperopt import hp
 
 # CONSTANTS:
-path_to_y = "labels/labels_y/"
 path_to_x = "labels/labels_x/"
 x_csv = "image_vector.csv"
 metrics = "labels/metrics.txt"
@@ -11,14 +10,6 @@ test_split = 0.2
 random_state = 42
 number_of_trees = 10000
 space = {
-    "param_space": {
-        "learning_rate": hp.quniform("learning_rate", 0.1, 0.6, 0.1),
-        "max_depth": hp.randint("max_depth", 3, 10),
-        "subsample": hp.quniform("subsample", 0.5, 1, 0.05),
-        "colsample_bytree": hp.quniform("colsample_bytree", 0.5, 1, 0.1),
-        "gamma": hp.quniform("gamma", 0, 1, 0.05),
-        "reg_lambda": hp.choice("reg_lambda", np.arange(1, 4, dtype=int)),
-    },
     "param_const": {
         "alpha": 0,
         #'max_bin': max_bin,
