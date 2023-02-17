@@ -1,6 +1,5 @@
 import pandas as pd
-import main
-import pytest
+#import pytest
 from main import *
 
 """
@@ -14,3 +13,8 @@ def test_loss_calculation():
     assert metric == sumup
 
 """
+
+x, y, y_t = create_df()
+print(x.head())
+print(y.head())
+print(y_t.head())

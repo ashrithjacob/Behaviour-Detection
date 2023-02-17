@@ -1,0 +1,26 @@
+Accuracy per frame:
+frame2520.csv:2.0
+frame180.csv:0.0
+frame22980.csv:0.0
+frame19800.csv:2.0
+frame19680.csv:0.0
+frame24720.csv:0.0
+frame17340.csv:0.0
+frame12060.csv:1.0
+frame19860.csv:1.0
+frame22200.csv:0.0
+frame16080.csv:2.0
+frame10380.csv:0.0
+frame18360.csv:2.0
+frame15240.csv:2.0
+frame24900.csv:1.0
+frame23040.csv:1.0
+
+Accuracy per label:
+food:0.0
+media:7.0
+transactions:12.0
+
+Total hamming loss:14.0
+Hamming percentage:29.166666666666668
+Total accuracy percentage:70.83333333333333

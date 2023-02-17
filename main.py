@@ -17,14 +17,13 @@ import numpy as np
 import pandas as pd
 import xgboost as xgb
 import constants
-import pathlib
 import numpy as np
-import math
 from sklearn.model_selection import train_test_split
 from hyperopt import STATUS_OK, fmin, tpe, Trials
 from hyperopt.early_stop import no_progress_loss
 from functools import reduce, partial
 from datetime import datetime
+from loss import *
 
 
 """
@@ -37,22 +36,22 @@ Functions:
 """
 
 
-space = constants.space["param_space"]
-loss = lambda y, y_pred: np.sum(abs(np.subtract(np.array(y), np.array(y_pred))))
+space = constants.space["param_space"]|constants.space["param_const"]
 
 
 def create_df():
     # getting all files in folder in alphabetical order
     files = sorted(os.listdir(constants.path_to_y))
-    # concatenating dataframe in alphabetical order of file names
-    y = pd.concat(
+    # creating data frame with columns:'frame','food', 'media', 'transaction'
+    y_full = pd.DataFrame(np.column_stack([files, pd.concat(
         (pd.read_csv(constants.path_to_y + str(f), sep=",", header=None) for f in files)
-    )
+    ).values.tolist()]))
     # reading csv containing object's presence/absence in each frame
     x = pd.read_csv(
         str(constants.path_to_x) + str(constants.x_csv), sep=",", header=None
     )
-    return x, y
+    y= remove_first_col(y_full)
+    return x, y, y_full
 
 
 def create_csv(*files):
@@ -71,15 +70,17 @@ def dump(obj):
             print("obj.%s = %s" % (attr, getattr(obj, attr)))
 
 
-def check_loss(y_test, y_pred):
-    y_diff = abs(y_test - y_pred)
-    metric_val = loss(y_test, y_pred)
-    sum_val = y_diff.sum().sum()
-    print("Hamming loss is:", metric_val)
-    if metric_val == sum_val:
-        print("Hamming loss calculation checked to be correct")
-    else:
-        print("Hamming loss calculated to be incorrect")
+def init_dmatrix(x_train,x_test,y_train,y_test):
+    constants.space["data"]["y_test"] = y_test
+    constants.space["data"]["d_train"] = xgb.DMatrix(x_train, y_train)
+    constants.space["data"]["d_test"] = xgb.DMatrix(x_test, y_test)
+    constants.space["data"]["d_test_feature"] = xgb.DMatrix(x_test)
+
+
+def get_frame(y_full,y_test):
+    for row in y_test.index:
+        row_name.append(row)
+    return y_full.iloc[row_name,:] 
 
 
 def d_matrix():
@@ -154,9 +155,8 @@ def run_hyperopt(
 
 
 if __name__ == "__main__":
-    x, y = create_df()
-    # print(x.head())
-    # print(y.head())
+    row_name=[]
+    x,y,y_full = create_df()
     # split test and train
     x_train, x_test, y_train, y_test = train_test_split(
         x,
@@ -164,26 +164,14 @@ if __name__ == "__main__":
         test_size=constants.test_split,
         random_state=constants.random_state,
         shuffle=True,
-        stratify=y,
+        stratify=y
     )  # see docs on train size vs test size
-    constants.space["data"]["y_test"] = y_test
-    constants.space["data"]["d_train"] = xgb.DMatrix(x_train, y_train)
-    constants.space["data"]["d_test"] = xgb.DMatrix(x_test, y_test)
-    constants.space["data"]["d_test_feature"] = xgb.DMatrix(x_test)
-    for i in constants.space["data"]:
-        print(constants.space["data"][i])
-    model = d_matrix()
-    y_pred = (
-        np.rint(
-            model.predict(constants.space["data"]["d_test_feature"], strict_shape=True)
-        )
-    ).astype(int)
-    check_loss(y_test, y_pred)
-    create_csv(y_test, x_test, y_pred)
+    init_dmatrix(x_train,x_test,y_train, y_test)
+    """
     status, message, best_param, processing_time = run_hyperopt(
         objective=objective,
-        space=constants.space["param_space"],
-        max_evals=1000,
+        space=space,
+        max_evals=100,
         #early_stop=1000,
         y_test=y_test,
         algorithm=tpe.suggest,
@@ -191,8 +179,21 @@ if __name__ == "__main__":
     )
     if not status:
         print(message)
-    print("Best prams are", best_param)
-    constants.best_param=best_param
+    print("Best params are", best_param)
+    """
+    #constants.best_param=best_param|constants.space["param_const"] # needs python 3.9+
+    constants.best_param=constants.best_param4|constants.space["param_const"]
+    print(constants.best_param)
+    model = d_matrix()
+    y_pred = (
+        np.rint(
+            model.predict(constants.space["data"]["d_test_feature"], strict_shape=True)
+        )
+    ).astype(int)
+    check_loss(y_test, y_pred)
+    y_full_test = get_frame(y_full, y_test)
+    create_csv(y_full_test, y_pred)
+    generate_metric()
 """
     trials = Trials()
     best = fmin(

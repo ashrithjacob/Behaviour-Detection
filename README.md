@@ -80,3 +80,8 @@ Error on running pytest:
   File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/_pytest/compat.py", line 256, in <module>
     @attr.s
 AttributeError: module 'attr' has no attribute 's'
+
+## Objective function and hyperopt
+- loss function = hamming distance used to optimize hyperparams
+- on plugging into xgboost, we can't equal the loss acquired through hyperparam training
+- 
