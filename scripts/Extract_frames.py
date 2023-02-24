@@ -10,10 +10,10 @@ import cv2
 import os
 
 # Read the video from specified path
-file = "V5"
-vid = cv2.VideoCapture("./videos/" + str(file) + ".mp4")
-store = './transaction_data'
-frame_rate = 100
+file = "Giving_money_vid"
+vid = cv2.VideoCapture("../videos/" + str(file) + ".mp4")
+store = '../data/video_frame/'
+frame_rate = 30
 
 try:
     # creating a folder named data

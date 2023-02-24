@@ -11,6 +11,7 @@
 #       pandas
 # ==============================================================================================================================#
 """
+import argparse
 import sys
 import os
 import numpy as np
@@ -18,6 +19,8 @@ import pandas as pd
 import xgboost as xgb
 import constants
 import numpy as np
+import warnings
+import mlflow
 from sklearn.model_selection import train_test_split
 from hyperopt import STATUS_OK, fmin, tpe, Trials
 from hyperopt.early_stop import no_progress_loss
@@ -36,21 +39,31 @@ Functions:
 """
 
 
-space = constants.space["param_space"]|constants.space["param_const"]
+space = constants.param["space"] | constants.param["const"]  # needs python 3.9+
 
 
 def create_df():
     # getting all files in folder in alphabetical order
     files = sorted(os.listdir(constants.path_to_y))
     # creating data frame with columns:'frame','food', 'media', 'transaction'
-    y_full = pd.DataFrame(np.column_stack([files, pd.concat(
-        (pd.read_csv(constants.path_to_y + str(f), sep=",", header=None) for f in files)
-    ).values.tolist()]))
+    y_full = pd.DataFrame(
+        np.column_stack(
+            [
+                files,
+                pd.concat(
+                    (
+                        pd.read_csv(constants.path_to_y + str(f), sep=",", header=None)
+                        for f in files
+                    )
+                ).values.tolist(),
+            ]
+        )
+    )
     # reading csv containing object's presence/absence in each frame
     x = pd.read_csv(
         str(constants.path_to_x) + str(constants.x_csv), sep=",", header=None
     )
-    y= remove_first_col(y_full)
+    y = remove_first_col(y_full)
     return x, y, y_full
 
 
@@ -64,69 +77,73 @@ def create_csv(*files):
             np.savetxt("labels/" + str(name) + ".csv", y_pred, delimiter=",")
 
 
+def display(g, h, y_pred):
+    print("y_test", constants.data["d_test"].get_label())
+    print("Y_pred", y_pred.flatten())
+    print("G,H", g, h)
+    print("G,H shapes", g.shape, h.shape)
+    print("G,H types", g.dtype, h.dtype)
+
+
 def dump(obj):
     for attr in dir(obj):
         if hasattr(obj, attr):
             print("obj.%s = %s" % (attr, getattr(obj, attr)))
 
 
-def init_dmatrix(x_train,x_test,y_train,y_test):
-    constants.space["data"]["y_test"] = y_test
-    constants.space["data"]["d_train"] = xgb.DMatrix(x_train, y_train)
-    constants.space["data"]["d_test"] = xgb.DMatrix(x_test, y_test)
-    constants.space["data"]["d_test_feature"] = xgb.DMatrix(x_test)
+def init_dmatrix(x_train, x_test, y_train, y_test):
+    constants.data["y_test"] = y_test
+    constants.data["d_train"] = xgb.DMatrix(x_train, y_train)
+    constants.data["d_test"] = xgb.DMatrix(x_test, y_test)
+    constants.data["d_test_feature"] = xgb.DMatrix(x_test)
 
 
-def get_frame(y_full,y_test):
+def get_frame(y_full, y_test):
+    row_name = []
     for row in y_test.index:
         row_name.append(row)
-    return y_full.iloc[row_name,:] 
+    return y_full.iloc[row_name, :]
 
 
 def d_matrix():
     num_round = constants.number_of_trees
-    watchlist_train = [(constants.space["data"]["d_train"], "train")]
-    watchlist_tests = [(constants.space["data"]["d_test"], "tests")]
+    watchlist = [
+        (constants.data["d_train"], "train"),
+        (constants.data["d_test"], "tests"),
+    ]
     print("loading data end, start to boost trees")
     boosted_tree = xgb.train(
-        constants.best_param,
-        constants.space["data"]["d_train"],
+        constants.best_param[0],
+        constants.data["d_train"],
         num_round,
-        evals=watchlist_train,
+        evals=watchlist,
         verbose_eval=100,
     )
-    """
-    xgmat = xgb.DMatrix(x_test)
-    y_pred = boosted_tree.predict(xgmat, strict_shape=True)
-    accuracy = accuracy_score(y_test, y_pred > 0.5)
-    return {"loss": -accuracy, "status": STATUS_OK}
-    """
     return boosted_tree
 
 
 def objective(space):
     num_round = constants.number_of_trees
     params = list(space.items())
-    dtrain = constants.space["data"]["d_train"]
-    watchlist_train = [(constants.space["data"]["d_train"], "train")]
-    watchlist_tests = [(constants.space["data"]["d_test"], "test")]
+    dtrain = constants.data["d_train"]
+    watchlist_train = [(constants.data["d_train"], "train")]
+    watchlist_tests = [(constants.data["d_test"], "test")]
     boosted_tree = xgb.train(
         params, dtrain, num_round, evals=watchlist_train, verbose_eval=100
     )
     y_pred = np.rint(
-        boosted_tree.predict(constants.space["data"]["d_test"], strict_shape=True)
+        boosted_tree.predict(constants.data["d_test"], strict_shape=True)
     ).astype(int)
-    y_test = constants.space["data"]["y_test"]
+    y_test = constants.data["y_test"]
     # TODO: Verify below section after reading paper
     return {"loss": loss(y_test, y_pred), "status": STATUS_OK}
 
 
-# TODO: check this function too
 def run_hyperopt(
     objective,
     space,
     max_evals,
-    #early_stop,
+    # early_stop,
     y_test,
     algorithm=tpe.suggest,
     verbose=True,
@@ -140,7 +157,7 @@ def run_hyperopt(
             algo=tpe.suggest,
             max_evals=max_evals,
             trials=trials,
-            #early_stop_fn=no_progress_loss(early_stop),
+            # early_stop_fn=no_progress_loss(early_stop),
             verbose=verbose,
         )
         processing_time = datetime.now() - start_time
@@ -150,13 +167,29 @@ def run_hyperopt(
         return (False, "Optimization Failed:\n{}".format(e), None, None)
 
 
-# tpe_trials = Trials()
-# dump(tpe_trials)
+def parse_opt():
+    parser = argparse.ArgumentParser(
+        prog="XGB with hyperopt",
+        description="Running XGBoost on yolo object detection data and performing hyperparam tuning as well with it",
+    )
+    parser.add_argument(
+        "-hp", "--hyperopt", action="store_true", help="impliment hyperhopt"
+    )
+    parser.add_argument(
+        "-bp",
+        "--bestparam",
+        choices=get_int(constants.best_param),
+        help="choose best param",
+    )  # takes a number of the best param that needs to be used
+    parser.add_argument("-cu",
+                        "--custom", action="store_true", help="use custom objective fucntion and eval metric"
+                        )
+    args = parser.parse_args()
+    return args.hyperopt, args.bestparam, args.custom
 
 
 if __name__ == "__main__":
-    row_name=[]
-    x,y,y_full = create_df()
+    x, y, y_full = create_df()
     # split test and train
     x_train, x_test, y_train, y_test = train_test_split(
         x,
@@ -164,50 +197,67 @@ if __name__ == "__main__":
         test_size=constants.test_split,
         random_state=constants.random_state,
         shuffle=True,
-        stratify=y
-    )  # see docs on train size vs test size
-    init_dmatrix(x_train,x_test,y_train, y_test)
-    """
-    status, message, best_param, processing_time = run_hyperopt(
-        objective=objective,
-        space=space,
-        max_evals=100,
-        #early_stop=1000,
-        y_test=y_test,
-        algorithm=tpe.suggest,
-        verbose=True
+        stratify=y,
     )
-    if not status:
-        print(message)
-    print("Best params are", best_param)
-    """
-    #constants.best_param=best_param|constants.space["param_const"] # needs python 3.9+
-    constants.best_param=constants.best_param4|constants.space["param_const"]
-    print(constants.best_param)
-    model = d_matrix()
-    y_pred = (
-        np.rint(
-            model.predict(constants.space["data"]["d_test_feature"], strict_shape=True)
+    # create a D_Matrix represetation for required data
+    init_dmatrix(x_train, x_test, y_train, y_test)
+    hyperopt_arg, best_param_arg, custom_arg = parse_opt()
+    if hyperopt_arg:
+        status, message, best, processing_time = run_hyperopt(
+            objective=objective,
+            space=space,
+            max_evals=100,
+            # early_stop=1000,
+            y_test=y_test,
+            algorithm=tpe.suggest,
+            verbose=True,
         )
+        if not status:
+            print(message)
+        print("Best params are", best)
+        # create best_params:
+        constants.best_param[0] = space.copy()
+        constants.best_param[0].update(best)
+    elif best_param_arg != None:
+        constants.best_param[0] = (
+            constants.param["const"] | constants.best_param[best_param_arg]
+        )
+    else:
+        warnings.warn(
+            "parsing no arguments, proceeding to use 'best_param: 1'", UserWarning
+        )
+        constants.best_param[0] = constants.param["const"] | constants.best_param[1]
+    if custom_arg:
+        constants.best_param[0] = constants.best_param[0]|constants.param["custom"]
+    else:
+        constants.best_param[0] = constants.best_param[0]|constants.param["default"]
+    #log params
+    with mlflow.start_run() as run:
+        mlflow.log_params(constants.best_param[0])
+    # run model:
+    model = d_matrix()
+    # get predictions:
+    # raw
+    y_pred1 = model.predict(constants.data["d_test_feature"], strict_shape=True)
+    # rounded
+    y_pred = (
+        np.rint(model.predict(constants.data["d_test_feature"], strict_shape=True))
     ).astype(int)
+    # gradient and hessian (TODO move to test)
+    g, h = custom_rmse(y_pred, constants.data["d_test"])
+    display(g, h, y_pred1)
+    # checkloss (TODO move to test)
     check_loss(y_test, y_pred)
+    # get y_test df with image name
     y_full_test = get_frame(y_full, y_test)
+    # write parsed args to csv
     create_csv(y_full_test, y_pred)
+    # generate 'labels/metrics.txt'
     generate_metric()
-"""
-    trials = Trials()
-    best = fmin(
-        fn=objective,
-        space=constants.space["param_space"],
-        algo=tpe.suggest,
-        max_evals=100,
-        trials=trials
-        # early_stop_fn=no_progress_loss(early_stop),
-        # verbose=True
-    )
-    print("Best", best)
-"""
 
-
-# for key in constants.space['data']:
-#    print("Keys", key)
+# TODO:
+# 1. update best params using .update
+# 2. early stop function run_hyperopt
+# 3. arg passer
+# 4. ML flow
+# 5. pytest - for each function - change './

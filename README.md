@@ -41,47 +41,52 @@ Ultimately, the best strategy for choosing frames will depend on the specific go
 - use CVAT to train datasets. See `labels.jpg` in `runs/train/exp<n>` folder to see
   how many of each class exists
 - Custom training: https://colab.research.google.com/github/roboflow-ai/yolov5-custom-training-tutorial/blob/main/yolov5-custom-training.ipynb
+
   4 - Label frames (not on objects but on behaviour)
-  try: https://github.com/Cartucho/OpenLabeling
-  https://www.nyckel.com/
+  Use the flask application built to do labelling
 
 5 - Train on the data
 
 - XGboost (using YOLO labels - should be computationally less expensive)
 - simple custom CNN without YOLO Labels(see:https://www.youtube.com/watch?v=hraKTseOuJA&ab_channel=DigitalSreeni)
   ( see github: https://github.com/bnsreenu/python_for_microscopists/blob/master/142-multi_label_classification.py)
+  Uses 4 layer conv net, followed by two dense layers and then a sigmoid with number of classification classes (in our case 3)
 
 6 - Next use autoencoders (after making XGB work)
-use autocoder to generate
+Read aout autoencoders
 
 ## Structure of project:
-- Store all constants in `commons.yaml` 
+
+- Store all constants in `constants.py`
 - Read data from labels and store in df
-- Read data from yolov5 
+- Read data from yolov5
 - trials.trials?
 
 ## TODO:
+
 - make script to train find best hyperparams and run booster on those params.
 
 ## Pytest tools:
+
 - Assertion
-Error on running pytest:
+  Error on running pytest:
 - File "<stdin>", line 1, in <module>
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/pytest/__init__.py", line 5, in <module>
-    from _pytest._code import ExceptionInfo
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/_pytest/_code/__init__.py", line 2, in <module>
-    from .code import Code
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/_pytest/_code/code.py", line 43, in <module>
-    from _pytest._io import TerminalWriter
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/_pytest/_io/__init__.py", line 1, in <module>
-    from .terminalwriter import get_terminal_width
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/_pytest/_io/terminalwriter.py", line 10, in <module>
-    from _pytest.compat import final
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/_pytest/compat.py", line 256, in <module>
-    @attr.s
-AttributeError: module 'attr' has no attribute 's'
+  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/pytest/**init**.py", line 5, in <module>
+  from \_pytest.\_code import ExceptionInfo
+  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/\_code/**init**.py", line 2, in <module>
+  from .code import Code
+  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/\_code/code.py", line 43, in <module>
+  from \_pytest.\_io import TerminalWriter
+  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/\_io/**init**.py", line 1, in <module>
+  from .terminalwriter import get_terminal_width
+  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/\_io/terminalwriter.py", line 10, in <module>
+  from \_pytest.compat import final
+  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/compat.py", line 256, in <module>
+  @attr.s
+  AttributeError: module 'attr' has no attribute 's'
 
 ## Objective function and hyperopt
+
 - loss function = hamming distance used to optimize hyperparams
 - on plugging into xgboost, we can't equal the loss acquired through hyperparam training
-- 
+- create custom objective, hamming
