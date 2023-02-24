@@ -4,4 +4,4 @@ extras/*
 __pycache__/*
 videos/*
 mlruns/*
-scripts/*
+scripts/__pycache__/*
