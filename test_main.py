@@ -6,7 +6,7 @@ import pytest
 from loss import *
 import argparse
 import warnings
-
+import mlflow
 # tests:TODO
 # 1. check all files in labels_y folder are not empty
 # 2.
@@ -66,6 +66,10 @@ def fxn():
     x =0
     x = x + 2
     print(x)
+    with mlflow.start_run(run_name='test3') as run:
+        run_id = run.info.run_id
+        mlflow.log_params({"a":2,"b":3,"c":4})
+    return run_id
 
 """
 x,y,y_full = create_df()
@@ -76,10 +80,16 @@ print("y_full shape", y_full.shape)
 
 parse_opt()
 #print(get_int(constants.best_param))
-#fxn()
+rid = fxn()
+"""
 x ={ "a" : 2,
      "b" : 3,
      "c" : 4
     }
 y = { "d" : 5}
 print("X",x|y)
+"""
+#with mlflow.start_run(run_name = 'test1'):
+with mlflow.start_run(run_id=str(rid)) as run:
+    mlflow.log_metric("hamming",3)
+

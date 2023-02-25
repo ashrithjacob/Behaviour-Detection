@@ -229,10 +229,13 @@ if __name__ == "__main__":
         constants.best_param[0] = constants.param["const"] | constants.best_param[1]
     if custom_arg:
         constants.best_param[0] = constants.best_param[0]|constants.param["custom"]
+        run_name = constants.best_param[0]["obj"]+"_"+constants.best_param[0]["feval"]
     else:
         constants.best_param[0] = constants.best_param[0]|constants.param["default"]
+        run_name = constants.best_param[0]["objective"]+"_"+constants.best_param[0]["eval_metric"]
     #log params
-    with mlflow.start_run() as run:
+    with mlflow.start_run(run_name = str(run_name)) as run:
+        run_id = run.info.run_id
         mlflow.log_params(constants.best_param[0])
     # run model:
     model = d_matrix()
@@ -253,7 +256,7 @@ if __name__ == "__main__":
     # write parsed args to csv
     create_csv(y_full_test, y_pred)
     # generate 'labels/metrics.txt'
-    generate_metric()
+    generate_metric(run_id)
 
 # TODO:
 # 1. update best params using .update

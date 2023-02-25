@@ -97,7 +97,7 @@ def check_loss(y_test, y_pred):
         print("Hamming loss calculated to be incorrect")
 
 
-def generate_metric():
+def generate_metric(run_id):
     y_full_test, y_test, y_pred, y_diff, rows, cols = get_relevant_df()
     # writing "accuracy per frame" to text file
     file = open(constants.metrics, "w")
@@ -123,7 +123,7 @@ def generate_metric():
     )
     file.close()
     # log metric
-    with mlflow.start_run() as run:
+    with mlflow.start_run(run_id = str(run_id)) as run:
         mlflow.log_metric("hamming",hamming)
         mlflow.log_metric("hamming percentage",(hamming / (rows * cols)) * 100)
         mlflow.log_metric("accuracy percentage", 100 - (hamming / (rows * cols)) * 100)
