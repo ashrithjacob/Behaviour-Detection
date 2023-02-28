@@ -45,13 +45,13 @@ param = {
 data = {}
 best_param = {
     0: {},
-    1: {
-        "colsample_bytree": 0.5,
-        "gamma": 0.6000000000000001,
-        "learning_rate": 0.4,
-        "max_depth": 3,
-        "reg_lambda": 1,
-        "subsample": 0.55,
+    1:{
+        "colsample_bytree": 1.0,
+        "gamma": 0.75,
+        "learning_rate": 0.2,
+        "max_depth": 6,
+        "reg_lambda": 2,
+        "subsample": 0.8,
     },
     2: {
         "colsample_bytree": 0.7000000000000001,
@@ -70,12 +70,12 @@ best_param = {
         "subsample": 0.5,
     },
     4: {
-        "colsample_bytree": 1.0,
-        "gamma": 0.75,
-        "learning_rate": 0.2,
-        "max_depth": 6,
-        "reg_lambda": 2,
-        "subsample": 0.8,
+        "colsample_bytree": 0.5,
+        "gamma": 0.6000000000000001,
+        "learning_rate": 0.4,
+        "max_depth": 3,
+        "reg_lambda": 1,
+        "subsample": 0.55,
     },
     5: {
         "colsample_bytree": 0.75,

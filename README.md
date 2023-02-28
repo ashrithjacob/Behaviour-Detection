@@ -1,3 +1,19 @@
+# Human action detection:
+
+This project aims to detect human actions from a video. It incorporates an object detection CNN such as yolo as feature extraction followed by the use of gradient boosting through XGBoost to make predictions from the tabular data produced by YOLO.
+To run the code:
+
+```
+python3 main.py -h
+```
+
+options:
+-h, --help show this help message and exit
+-hp, --hyperopt impliment hyperhopt
+-bp {1,2,3,4,5,6}, --bestparam {1,2,3,4,5,6}
+choose best param
+-cu, --custom use custom objective function and eval metric
+
 ## TODO
 
 1. Choose video clip\
@@ -64,26 +80,11 @@ Read aout autoencoders
 
 ## TODO:
 
-- make script to train find best hyperparams and run booster on those params.
+- Make script to train find best hyperparams and run booster on those params.
 
 ## Pytest tools:
 
-- Assertion
-  Error on running pytest:
-- File "<stdin>", line 1, in <module>
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/pytest/**init**.py", line 5, in <module>
-  from \_pytest.\_code import ExceptionInfo
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/\_code/**init**.py", line 2, in <module>
-  from .code import Code
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/\_code/code.py", line 43, in <module>
-  from \_pytest.\_io import TerminalWriter
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/\_io/**init**.py", line 1, in <module>
-  from .terminalwriter import get_terminal_width
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/\_io/terminalwriter.py", line 10, in <module>
-  from \_pytest.compat import final
-  File "/media/Data_linux/anaconda3/envs/dl/lib/python3.10/site-packages/\_pytest/compat.py", line 256, in <module>
-  @attr.s
-  AttributeError: module 'attr' has no attribute 's'
+- Problems identifying xgboost and hyperopt
 
 ## Objective function and hyperopt
 

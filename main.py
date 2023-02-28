@@ -181,9 +181,12 @@ def parse_opt():
         choices=get_int(constants.best_param),
         help="choose best param",
     )  # takes a number of the best param that needs to be used
-    parser.add_argument("-cu",
-                        "--custom", action="store_true", help="use custom objective fucntion and eval metric"
-                        )
+    parser.add_argument(
+        "-cu",
+        "--custom",
+        action="store_true",
+        help="use custom objective fucntion and eval metric",
+    )
     args = parser.parse_args()
     return args.hyperopt, args.bestparam, args.custom
 
@@ -218,9 +221,9 @@ if __name__ == "__main__":
         # create best_params:
         constants.best_param[0] = space.copy()
         constants.best_param[0].update(best)
-    elif best_param_arg != None:
+    if best_param_arg != None:
         constants.best_param[0] = (
-            constants.param["const"] | constants.best_param[best_param_arg]
+            constants.param["const"] | constants.best_param[int(best_param_arg)]
         )
     else:
         warnings.warn(
@@ -228,13 +231,21 @@ if __name__ == "__main__":
         )
         constants.best_param[0] = constants.param["const"] | constants.best_param[1]
     if custom_arg:
-        constants.best_param[0] = constants.best_param[0]|constants.param["custom"]
-        run_name = constants.best_param[0]["obj"]+"_"+constants.best_param[0]["feval"]
+        constants.best_param[0] = constants.best_param[0] | constants.param["custom"]
+        run_name = (
+            constants.best_param[0]["obj"].__name__
+            + "_"
+            + str(constants.best_param[0]["feval"].__name__)
+        )
     else:
-        constants.best_param[0] = constants.best_param[0]|constants.param["default"]
-        run_name = constants.best_param[0]["objective"]+"_"+constants.best_param[0]["eval_metric"]
-    #log params
-    with mlflow.start_run(run_name = str(run_name)) as run:
+        constants.best_param[0] = constants.best_param[0] | constants.param["default"]
+        run_name = (
+            constants.best_param[0]["objective"]
+            + "_"
+            + constants.best_param[0]["eval_metric"]
+        )
+    # log params
+    with mlflow.start_run(run_name=str(run_name)) as run:
         run_id = run.info.run_id
         mlflow.log_params(constants.best_param[0])
     # run model:
@@ -243,9 +254,7 @@ if __name__ == "__main__":
     # raw
     y_pred1 = model.predict(constants.data["d_test_feature"], strict_shape=True)
     # rounded
-    y_pred = (
-        np.rint(model.predict(constants.data["d_test_feature"], strict_shape=True))
-    ).astype(int)
+    y_pred = (model.predict(constants.data["d_test_feature"], strict_shape=True)>0.5).astype(int)
     # gradient and hessian (TODO move to test)
     g, h = custom_rmse(y_pred, constants.data["d_test"])
     display(g, h, y_pred1)
@@ -264,3 +273,4 @@ if __name__ == "__main__":
 # 3. arg passer
 # 4. ML flow
 # 5. pytest - for each function - change './
+# 6. test if y_pred takes only 0 and 1 values (no negative)

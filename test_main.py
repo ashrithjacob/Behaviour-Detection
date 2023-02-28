@@ -4,24 +4,26 @@ import os
 import constants
 import pytest
 from loss import *
+from main import *
 import argparse
 import warnings
 import mlflow
+from sklearn.metrics import classification_report
+from sklearn.metrics import precision_recall_fscore_support as score
+from sklearn.datasets import make_multilabel_classification
+
+def XGB_multilabel():
+    X, y = make_multilabel_classification(
+        n_samples=32, n_classes=5, n_labels=3, random_state=0
+    )
+    clf = xgb.XGBClassifier(tree_method="hist")
+    clf.fit(X, y)
+    np.testing.assert_allclose(clf.predict(X), y)
+
+
 # tests:TODO
 # 1. check all files in labels_y folder are not empty
-# 2.
-
-"""
-files = sorted(os.listdir(constants.path_to_y))
-c = 0
-for f in files:
-    df = pd.read_csv(constants.path_to_y+str(f), header=None)
-    print(str(f)+'\t'+ str(df.iloc[0].tolist()))
-    c=c+1
-
-print("length", c)
-assert c == len(files)
-"""
+# 2. 
 
 
 def create_df():
@@ -71,25 +73,49 @@ def fxn():
         mlflow.log_params({"a":2,"b":3,"c":4})
     return run_id
 
-"""
-x,y,y_full = create_df()
-print("x shape", x.shape)
-print("y shape", y.shape)
-print("y_full shape", y_full.shape)
-"""
 
-parse_opt()
+#parse_opt()
 #print(get_int(constants.best_param))
 rid = fxn()
-"""
-x ={ "a" : 2,
-     "b" : 3,
-     "c" : 4
-    }
-y = { "d" : 5}
-print("X",x|y)
-"""
+
+
 #with mlflow.start_run(run_name = 'test1'):
 with mlflow.start_run(run_id=str(rid)) as run:
     mlflow.log_metric("hamming",3)
 
+
+def metric_test(y_test, y_pred):
+    target_names = ['class 0', 'class 1', 'class 2']
+    x = classification_report(y_test, y_pred, output_dict=True, target_names=target_names)
+    precision,recall,fscore,support=score(y_test,y_pred,average='macro')
+    print ('Precision : {}'.format(precision))
+    print ('Recall    : {}'.format(recall))
+    print ('F-score   : {}'.format(fscore))
+    print ('Support   : {}'.format(support))
+    print('x', x['class 0']['precision'])
+    return x
+
+def metric_test_main(y_test,y_pred):
+    target_names = ['class 0', 'class 1', 'class 2']
+    y_t = y_test.to_numpy()
+    y_p = y_pred.to_numpy()
+    print(y_t)
+    print(y_p)
+    report = classification_report(y_t, y_p, target_names=constants.labels)
+    report_dict = classification_report(y_t, y_p, output_dict=True, target_names=constants.labels)
+    print(report)
+
+def df_to_np():
+    y_pred = pd.read_csv('pred_csv.csv', header=None, index_col=None)
+    y_test = pd.read_csv('test_csv.csv', header=None, index_col=None)
+    y1=y_pred.to_numpy()
+    y2=y_test.to_numpy()
+    print(np.transpose(y2))
+    print(y1)
+    return y2,y1
+
+y_full_test, y_test, y_pred, y_diff, rows, cols = get_relevant_df()
+#yt,yp=df_to_np()
+#print(metric_test(yt,yp))
+#print(y_test.shape, y_pred.shape)
+print(metric_test_main(y_test,y_pred))
