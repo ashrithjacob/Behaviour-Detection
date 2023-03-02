@@ -141,10 +141,7 @@ def generate_metric(run_id):
 
 # generate_metric()
 # TODO:
-# print the stratified graph and values in seperate folder
 # add early stopping and best_params
 # print frame name along with accuracy/frame - done
 
 # Next:
-# Coallesce many videos into one
-# find best frame for a second along with timestamp

@@ -9,7 +9,7 @@ frame_Giving_money_vid_11010.csv:0.0
 frame_Giving_money_vid_10890.csv:2.0
 frame_Giving_money_vid_16620.csv:0.0
 frame_Giving_money_vid_31680.csv:0.0
-frame_Giving_money_vid_9480.csv:1.0
+frame_Giving_money_vid_9480.csv:0.0
 frame_Giving_money_vid_7530.csv:0.0
 frame_Giving_money_vid_17520.csv:0.0
 frame_Giving_money_vid_4470.csv:1.0
@@ -45,7 +45,7 @@ frame_Giving_money_vid_10140.csv:1.0
 frame_Giving_money_vid_28590.csv:1.0
 frame_Giving_money_vid_14790.csv:0.0
 frame_Giving_money_vid_21120.csv:0.0
-frame_Giving_money_vid_12090.csv:0.0
+frame_Giving_money_vid_12090.csv:1.0
 frame_Giving_money_vid_7260.csv:1.0
 frame_Giving_money_vid_11280.csv:1.0
 frame_Giving_money_vid_15240.csv:0.0
@@ -56,10 +56,10 @@ frame_Giving_money_vid_1050.csv:1.0
 frame_Giving_money_vid_3390.csv:0.0
 frame_Giving_money_vid_15720.csv:1.0
 frame_Giving_money_vid_17460.csv:1.0
-frame_Giving_money_vid_19050.csv:1.0
+frame_Giving_money_vid_19050.csv:0.0
 frame_Giving_money_vid_27450.csv:0.0
 frame_Giving_money_vid_26370.csv:0.0
-frame_Giving_money_vid_22230.csv:1.0
+frame_Giving_money_vid_22230.csv:0.0
 frame_Giving_money_vid_36270.csv:0.0
 frame_Giving_money_vid_29610.csv:0.0
 frame_Giving_money_vid_11790.csv:0.0
@@ -74,14 +74,14 @@ frame_Giving_money_vid_26640.csv:0.0
 frame_Giving_money_vid_540.csv:0.0
 frame_Giving_money_vid_29280.csv:0.0
 frame_Giving_money_vid_2250.csv:0.0
-frame_Giving_money_vid_15960.csv:1.0
+frame_Giving_money_vid_15960.csv:0.0
 frame_Giving_money_vid_4380.csv:0.0
 frame_Giving_money_vid_9090.csv:2.0
 frame_Giving_money_vid_14580.csv:0.0
 frame_Giving_money_vid_6390.csv:0.0
 frame_Giving_money_vid_12720.csv:1.0
 frame_Giving_money_vid_28680.csv:0.0
-frame_Giving_money_vid_4770.csv:0.0
+frame_Giving_money_vid_4770.csv:1.0
 frame_Giving_money_vid_25320.csv:0.0
 frame_Giving_money_vid_810.csv:0.0
 frame_Giving_money_vid_35940.csv:0.0
@@ -126,7 +126,7 @@ frame_Giving_money_vid_32070.csv:0.0
 frame_Giving_money_vid_18090.csv:0.0
 frame_Giving_money_vid_12750.csv:3.0
 frame_Giving_money_vid_13980.csv:0.0
-frame_Giving_money_vid_4680.csv:0.0
+frame_Giving_money_vid_4680.csv:1.0
 frame_Giving_money_vid_35040.csv:1.0
 frame_Giving_money_vid_12420.csv:0.0
 frame_Giving_money_vid_16650.csv:1.0
@@ -158,7 +158,7 @@ frame_Giving_money_vid_7410.csv:0.0
 frame_Giving_money_vid_26940.csv:0.0
 frame_Giving_money_vid_23130.csv:0.0
 frame_Giving_money_vid_28050.csv:0.0
-frame_Giving_money_vid_6600.csv:1.0
+frame_Giving_money_vid_6600.csv:0.0
 frame_Giving_money_vid_4500.csv:1.0
 frame_Giving_money_vid_7140.csv:1.0
 frame_Giving_money_vid_1590.csv:0.0
@@ -183,40 +183,40 @@ frame_Giving_money_vid_16740.csv:1.0
 frame_Giving_money_vid_11700.csv:1.0
 frame_Giving_money_vid_19710.csv:0.0
 frame_Giving_money_vid_28620.csv:0.0
-frame_Giving_money_vid_3360.csv:1.0
+frame_Giving_money_vid_3360.csv:0.0
 frame_Giving_money_vid_36990.csv:1.0
-frame_Giving_money_vid_13740.csv:0.0
-frame_Giving_money_vid_19380.csv:1.0
+frame_Giving_money_vid_13740.csv:1.0
+frame_Giving_money_vid_19380.csv:2.0
 frame_Giving_money_vid_20070.csv:0.0
 frame_Giving_money_vid_8010.csv:1.0
-frame_Giving_money_vid_9510.csv:1.0
+frame_Giving_money_vid_9510.csv:0.0
 frame_Giving_money_vid_18120.csv:0.0
 frame_Giving_money_vid_27480.csv:0.0
 frame_Giving_money_vid_6720.csv:0.0
 frame_Giving_money_vid_5640.csv:0.0
 frame_Giving_money_vid_13260.csv:0.0
 frame_Giving_money_vid_36900.csv:1.0
-frame_Giving_money_vid_14520.csv:0.0
+frame_Giving_money_vid_14520.csv:1.0
 frame_Giving_money_vid_1140.csv:0.0
 frame_Giving_money_vid_2100.csv:0.0
 
 Accuracy per label:
 food:0.0
-media:68.0
-transactions:119.0
+media:69.0
+transactions:118.0
 
-Total hamming loss:97.0
-Hamming percentage:16.166666666666664
-Total accuracy percentage:83.83333333333334
+Total hamming loss:96.0
+Hamming percentage:16.0
+Total accuracy percentage:84.0
 
 Classification Report:
               precision    recall  f1-score   support
 
-        food       0.92      0.94      0.93       113
-       media       0.90      0.79      0.84        99
-transactions       0.78      0.91      0.84       149
+        food       0.91      0.93      0.92       113
+       media       0.90      0.78      0.83        99
+transactions       0.79      0.95      0.86       149
 
    micro avg       0.85      0.89      0.87       361
-   macro avg       0.87      0.88      0.87       361
-weighted avg       0.86      0.89      0.87       361
- samples avg       0.86      0.89      0.86       361
+   macro avg       0.86      0.88      0.87       361
+weighted avg       0.85      0.89      0.87       361
+ samples avg       0.86      0.90      0.86       361

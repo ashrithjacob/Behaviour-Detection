@@ -9,15 +9,27 @@ python3 main.py -h
 
 options:
 -h, --help show this help message and exit
--hp, --hyperopt impliment hyperhopt
+-hp, -- impliment hyperhopt
 -bp {1,2,3,4,5,6}, --bestparam {1,2,3,4,5,6}
 choose best param
--cu, --custom use custom objective function and eval metric
+-cu, --custom use custom objective function and eval metric as opposed to default
+
+### Hyperopt:
+Library to tune hyperparameters to optimise a specific loss function. In this case, hamming loss.
+
+### Best param:
+Hyperopt returns the best parameters. In this case stored in `constants.py` as `best_param`.
+
+### Custom:
+The code can be run with XGBoost's built in objective function or by any custom defined functions:
+custom functions that are already configured:
+- RMSE (root mean squared error)
+- Hamming
+- Psudo-huber-loss
 
 ## TODO
 
-1. Choose video clip\
-2. How to choose best frames and split (Below is what chat GPT3 had to say)\
+1. How to choose best frames and split (Below is what chat GPT3 had to say)\
    There are a few different strategies you might use to choose the best frames from a video for computer vision tasks:\
 
 - Choose frames evenly spaced over time: This can be a good strategy if you want to get a representative sample of the video and don't have any particular events or features that you want to focus on. To do this, you can simply choose frames at regular intervals (e.g., every 10 seconds) throughout the video.
@@ -69,7 +81,7 @@ Ultimately, the best strategy for choosing frames will depend on the specific go
   Uses 4 layer conv net, followed by two dense layers and then a sigmoid with number of classification classes (in our case 3)
 
 6 - Next use autoencoders (after making XGB work)
-Read aout autoencoders
+Read about autoencoders
 
 ## Structure of project:
 
@@ -78,13 +90,10 @@ Read aout autoencoders
 - Read data from yolov5
 - trials.trials?
 
-## TODO:
 
-- Make script to train find best hyperparams and run booster on those params.
+## Pytest:
 
-## Pytest tools:
-
-- Problems identifying xgboost and hyperopt
+- Problems identifying xgboost and hyperopt packages
 
 ## Objective function and hyperopt
 

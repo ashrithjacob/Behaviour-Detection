@@ -7,8 +7,7 @@
 #-- Revisions: None
 #-- Reference Links Used:
 #-- Required Tools:
-#       python 3.7/3.8/3.9/3.10
-#       pandas
+#       python 3.9/3.10
 # ==============================================================================================================================#
 """
 import argparse
@@ -135,7 +134,6 @@ def objective(space):
         boosted_tree.predict(constants.data["d_test"], strict_shape=True)
     ).astype(int)
     y_test = constants.data["y_test"]
-    # TODO: Verify below section after reading paper
     return {"loss": loss(y_test, y_pred), "status": STATUS_OK}
 
 
@@ -185,7 +183,7 @@ def parse_opt():
         "-cu",
         "--custom",
         action="store_true",
-        help="use custom objective fucntion and eval metric",
+        help="use custom objective function and eval metric",
     )
     args = parser.parse_args()
     return args.hyperopt, args.bestparam, args.custom
@@ -204,6 +202,7 @@ if __name__ == "__main__":
     )
     # create a D_Matrix represetation for required data
     init_dmatrix(x_train, x_test, y_train, y_test)
+    # get parser
     hyperopt_arg, best_param_arg, custom_arg = parse_opt()
     if hyperopt_arg:
         status, message, best, processing_time = run_hyperopt(
@@ -254,11 +253,13 @@ if __name__ == "__main__":
     # raw
     y_pred1 = model.predict(constants.data["d_test_feature"], strict_shape=True)
     # rounded
-    y_pred = (model.predict(constants.data["d_test_feature"], strict_shape=True)>0.5).astype(int)
+    y_pred = (
+        model.predict(constants.data["d_test_feature"], strict_shape=True) > 0.5
+    ).astype(int)
     # gradient and hessian (TODO move to test)
     g, h = custom_rmse(y_pred, constants.data["d_test"])
     display(g, h, y_pred1)
-    # checkloss (TODO move to test)
+    # checkloss
     check_loss(y_test, y_pred)
     # get y_test df with image name
     y_full_test = get_frame(y_full, y_test)
@@ -268,9 +269,10 @@ if __name__ == "__main__":
     generate_metric(run_id)
 
 # TODO:
-# 1. update best params using .update
-# 2. early stop function run_hyperopt
-# 3. arg passer
-# 4. ML flow
-# 5. pytest - for each function - change './
-# 6. test if y_pred takes only 0 and 1 values (no negative)
+# 1. early stop function run_hyperopt
+# 2. pytest - for each function - change './
+# 3. test if y_pred takes only 0 and 1 values (no negative)
+# 4. move `check_loss()` to test
+# 5. Save the stratified graph image
+# 6. Coallesce many videos into one
+# 7. Find best frame for a second along with timestamp
