@@ -7,12 +7,12 @@ To run the code:
 python3 main.py -h
 ```
 
-options:
--h, --help show this help message and exit
--hp, -- impliment hyperhopt
--bp {1,2,3,4,5,6}, --bestparam {1,2,3,4,5,6}
+options:\
+-h, --help show this help message and exit\
+-hp, -- impliment hyperhopt\
+-bp {1,2,3,4,5,6}, --bestparam {1,2,3,4,5,6}\
 choose best param
--cu, --custom use custom objective function and eval metric as opposed to default
+-cu, --custom use custom objective function and eval metric as opposed to default\
 
 ### Hyperopt:
 Library to tune hyperparameters to optimise a specific loss function. In this case, hamming loss.
