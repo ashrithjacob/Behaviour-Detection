@@ -1,7 +1,6 @@
-data/*
-data_predictions/*
-extras/*
-__pycache__/*
-videos/*
-mlruns/*
-scripts/__pycache__/*
+data/
+data_predictions/
+extras/
+__pycache__/
+videos/
+mlruns/

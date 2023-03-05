@@ -1,6 +1,6 @@
 import numpy as np
 from hyperopt import hp
-from loss import *
+from utils.loss import *
 
 # CONSTANTS:
 path_to_y = "labels/labels_y/"

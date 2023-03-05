@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import csv
-import constants
+from utils import constants
 import xgboost as xgb
 import mlflow
 from sklearn.metrics import classification_report 
