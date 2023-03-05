@@ -259,8 +259,8 @@ if __name__ == "__main__":
     # gradient and hessian (TODO move to test)
     g, h = custom_rmse(y_pred, constants.data["d_test"])
     display(g, h, y_pred1)
-    # checkloss
-    check_loss(y_test, y_pred)
+    # hamming loss
+    print("Hamming loss is:", loss(y_test, y_pred))
     # get y_test df with image name
     y_full_test = get_frame(y_full, y_test)
     # write parsed args to csv
@@ -271,8 +271,6 @@ if __name__ == "__main__":
 # TODO:
 # 1. early stop function run_hyperopt
 # 2. pytest - for each function - change './
-# 3. test if y_pred takes only 0 and 1 values (no negative)
-# 4. move `check_loss()` to test
 # 5. Save the stratified graph image
 # 6. Coallesce many videos into one
 # 7. Find best frame for a second along with timestamp

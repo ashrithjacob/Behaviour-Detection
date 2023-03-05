@@ -86,18 +86,6 @@ def get_int(dict):
     return [str(l[i]) for i in range(len(l))]
 
 
-# test:checking if Hamming loss calculated is correct
-def check_loss(y_test, y_pred):
-    y_diff = abs(y_test - y_pred)
-    metric_val = loss(y_test, y_pred)
-    sum_val = y_diff.sum().sum()
-    print("Hamming loss is:", metric_val)
-    if metric_val == sum_val:
-        print("Hamming loss calculation checked to be correct")
-    else:
-        print("Hamming loss calculated to be incorrect")
-
-
 def generate_metric(run_id):
     y_full_test, y_test, y_pred, y_diff, rows, cols = get_relevant_df()
     # classification report generation

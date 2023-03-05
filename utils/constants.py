@@ -3,6 +3,7 @@ from hyperopt import hp
 from utils.loss import *
 
 # CONSTANTS:
+BASE_DIR = "/home/ashrith/github/behaviour_project"
 path_to_y = "labels/labels_y/"
 path_to_x = "labels/labels_x/"
 x_csv = "image_vector.csv"
