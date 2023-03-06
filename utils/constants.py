@@ -46,7 +46,7 @@ param = {
 data = {}
 best_param = {
     0: {},
-    1:{
+    1: {
         "colsample_bytree": 1.0,
         "gamma": 0.75,
         "learning_rate": 0.2,

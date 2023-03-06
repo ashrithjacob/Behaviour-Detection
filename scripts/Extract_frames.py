@@ -12,7 +12,7 @@ import os
 # Read the video from specified path
 file = "Giving_money_vid"
 vid = cv2.VideoCapture("../videos/" + str(file) + ".mp4")
-store = '../data/video_frame/'
+store = "../data/video_frame/"
 frame_rate = 30
 
 try:
@@ -22,12 +22,12 @@ try:
 
 # if not created then raise error
 except OSError:
-    print('Error: Creating directory of data')
+    print("Error: Creating directory of data")
 
 # frame
 currentframe = 0
 
-while (True):
+while True:
     # reading from frame
     success, frame = vid.read()
 
@@ -35,9 +35,16 @@ while (True):
         # Extracting every 'frame_rate' number of frames
         if currentframe % frame_rate == 0:
             # continue creating images until video remains
-            name = str(store) + '/frame' + '_' + str(file) + \
-                '_' + str(currentframe) + '.jpg'
-            print('Creating...' + name)
+            name = (
+                str(store)
+                + "/frame"
+                + "_"
+                + str(file)
+                + "_"
+                + str(currentframe)
+                + ".jpg"
+            )
+            print("Creating..." + name)
             # writing the extracted images
             cv2.imwrite(name, frame)
 

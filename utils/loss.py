@@ -4,7 +4,7 @@ import csv
 from utils import constants
 import xgboost as xgb
 import mlflow
-from sklearn.metrics import classification_report 
+from sklearn.metrics import classification_report
 
 loss = lambda y, y_pred: np.sum(abs(np.subtract(np.array(y), np.array(y_pred))))
 remove_first_col = (
@@ -79,7 +79,7 @@ def get_relevant_df():
     return y_full_test, y_test, y_pred, y_diff, rows, cols
 
 
-#return the integer values of dict keys
+# return the integer values of dict keys
 def get_int(dict):
     l = [val for val in list(dict.keys()) if isinstance(val, (int, float))]
     l.remove(0)
@@ -92,7 +92,9 @@ def generate_metric(run_id):
     y_t = y_test.to_numpy()
     y_p = y_pred.to_numpy()
     report = classification_report(y_t, y_p, target_names=constants.labels)
-    report_dict = classification_report(y_t, y_p, output_dict=True, target_names=constants.labels)
+    report_dict = classification_report(
+        y_t, y_p, output_dict=True, target_names=constants.labels
+    )
     # writing "accuracy per frame" to text file
     file = open(constants.metrics, "w")
     file.write("Accuracy per frame:\n")
@@ -115,17 +117,18 @@ def generate_metric(run_id):
     file.write(
         "Total accuracy percentage:" + str(100 - (hamming / (rows * cols)) * 100) + "\n"
     )
-    file.write("\n"+"Classification Report:\n")
+    file.write("\n" + "Classification Report:\n")
     file.write(report)
     file.close()
     # log metric
-    with mlflow.start_run(run_id = str(run_id)) as run:
-        mlflow.log_metric("hamming",hamming)
-        mlflow.log_metric("hamming percentage",(hamming / (rows * cols)) * 100)
+    with mlflow.start_run(run_id=str(run_id)) as run:
+        mlflow.log_metric("hamming", hamming)
+        mlflow.log_metric("hamming percentage", (hamming / (rows * cols)) * 100)
         mlflow.log_metric("accuracy percentage", 100 - (hamming / (rows * cols)) * 100)
-        mlflow.log_metric("micro precision", report_dict['micro avg']['precision'])
-        mlflow.log_metric("micro recall", report_dict['micro avg']['recall'])
-        mlflow.log_metric("micro F1 score", report_dict['micro avg']['f1-score'])
+        mlflow.log_metric("micro precision", report_dict["micro avg"]["precision"])
+        mlflow.log_metric("micro recall", report_dict["micro avg"]["recall"])
+        mlflow.log_metric("micro F1 score", report_dict["micro avg"]["f1-score"])
+
 
 # generate_metric()
 # TODO:
