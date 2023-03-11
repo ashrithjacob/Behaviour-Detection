@@ -29,6 +29,10 @@ custom functions that are already configured:
 
 ## TODO
 
+a. Jupyter notebook to print statified split between different labels
+b. Fix accuracy of each label in `metrics.txt`
+c. DART in xgboost
+
 1. How to choose best frames and split (Below is what chat GPT3 had to say)\
    There are a few different strategies you might use to choose the best frames from a video for computer vision tasks:\
 
