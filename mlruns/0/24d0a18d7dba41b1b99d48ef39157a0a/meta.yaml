@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ashrith/github/behaviour_project/mlruns/0/24d0a18d7dba41b1b99d48ef39157a0a/artifacts
+end_time: 1677593295609
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 24d0a18d7dba41b1b99d48ef39157a0a
+run_name: pseudo_huber_loss_pseudo_huber_loss_eval
+run_uuid: 24d0a18d7dba41b1b99d48ef39157a0a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1677593295598
+status: 3
+tags: []
+user_id: ashrith

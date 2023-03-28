@@ -1,0 +1,16 @@
+artifact_uri: file:///home/ashrith/github/behaviour_project/mlruns/0/77a0362efe3e4ebf83b211b455af385f/artifacts
+deleted_time: 1677534081848
+end_time: 1677350888880
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 77a0362efe3e4ebf83b211b455af385f
+run_name: test1
+run_uuid: 77a0362efe3e4ebf83b211b455af385f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1677350888871
+status: 3
+tags: []
+user_id: ashrith

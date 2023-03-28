@@ -1,0 +1,16 @@
+artifact_uri: file:///home/ashrith/github/behaviour_project/mlruns/0/fc678d35716f453a801cbcd3d9b573da/artifacts
+deleted_time: 1677534081855
+end_time: 1677327606556
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: fc678d35716f453a801cbcd3d9b573da
+run_name: huber-loss
+run_uuid: fc678d35716f453a801cbcd3d9b573da
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1677327606548
+status: 1
+tags: []
+user_id: ashrith
