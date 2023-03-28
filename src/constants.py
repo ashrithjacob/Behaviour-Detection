@@ -1,6 +1,6 @@
 import numpy as np
 from hyperopt import hp
-from utils.loss import *
+from src.loss import *
 
 # CONSTANTS:
 BASE_DIR = "/home/ashrith/github/behaviour_project"
