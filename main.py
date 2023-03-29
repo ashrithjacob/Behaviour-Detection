@@ -47,6 +47,8 @@ x: data frame containing object's presence/absence in each frame
 y: data frame containing labels for each frame
 y_full: data frame containing labels for each frame and file name
 """
+
+
 def create_df():
     # getting all files in folder in alphabetical order
     files = sorted(os.listdir(constants.path_to_y))
@@ -71,9 +73,12 @@ def create_df():
     y = remove_first_col(y_full)
     return x, y, y_full
 
+
 """
 saves numpy array and dataframe to csv file
 """
+
+
 def create_csv(*files):
     for file in files:
         # get name of file
@@ -83,9 +88,12 @@ def create_csv(*files):
         elif isinstance(file, np.ndarray):
             np.savetxt("labels/" + str(name) + ".csv", y_pred, delimiter=",")
 
+
 """
 display gradients and hessians
 """
+
+
 def display(g, h, y_pred):
     print("y_test", constants.data["d_test"].get_label())
     print("Y_pred", y_pred.flatten())
@@ -93,28 +101,37 @@ def display(g, h, y_pred):
     print("G,H shapes", g.shape, h.shape)
     print("G,H types", g.dtype, h.dtype)
 
+
 """
 create dmatrix for xgboost
 """
+
+
 def init_dmatrix(x_train, x_test, y_train, y_test):
     constants.data["y_test"] = y_test
     constants.data["d_train"] = xgb.DMatrix(x_train, y_train)
     constants.data["d_test"] = xgb.DMatrix(x_test, y_test)
     constants.data["d_test_feature"] = xgb.DMatrix(x_test)
 
+
 """
 get frame_name from y_full for only the test data
 """
+
+
 def get_frame(y_full, y_test):
     row_name = []
     for row in y_test.index:
         row_name.append(row)
     return y_full.iloc[row_name, :]
 
+
 """
 perform xgboost regression
 returns: boosted_tree
 """
+
+
 def d_matrix():
     num_round = constants.number_of_trees
     watchlist = [
@@ -131,9 +148,12 @@ def d_matrix():
     )
     return boosted_tree
 
+
 """
 objective function for hyperopt
 """
+
+
 def objective(space):
     num_round = constants.number_of_trees
     params = list(space.items())
@@ -149,15 +169,17 @@ def objective(space):
     y_test = constants.data["y_test"]
     return {"loss": loss(y_test, y_pred), "status": STATUS_OK}
 
+
 """"
 use hyperopt to find best parameters
 """
+
+
 def run_hyperopt(
     objective,
     space,
     max_evals,
-    # early_stop,
-    y_test,
+    early_stop,
     algorithm=tpe.suggest,
     verbose=True,
 ):
@@ -167,10 +189,10 @@ def run_hyperopt(
         best = fmin(
             fn=objective,
             space=space,
-            algo=tpe.suggest,
+            algo=algorithm,
             max_evals=max_evals,
             trials=trials,
-            # early_stop_fn=no_progress_loss(early_stop),
+            early_stop_fn=no_progress_loss(early_stop),
             verbose=verbose,
         )
         processing_time = datetime.now() - start_time
@@ -179,9 +201,12 @@ def run_hyperopt(
         print(e)
         return (False, "Optimization Failed:\n{}".format(e), None, None)
 
+
 """
 parse command line arguments
 """
+
+
 def parse_opt():
     parser = argparse.ArgumentParser(
         prog="XGB with hyperopt",
@@ -232,8 +257,7 @@ if __name__ == "__main__":
             objective=objective,
             space=space,
             max_evals=100,
-            # early_stop=1000,
-            y_test=y_test,
+            early_stop=100,
             algorithm=tpe.suggest,
             verbose=True,
         )
@@ -293,8 +317,10 @@ if __name__ == "__main__":
     generate_metric(run_id)
 
 # TODO:
-# 1. early stop function run_hyperopt
-# 2. pytest - for each function - change './
-# 5. Save the stratified graph image
-# 6. Coallesce many videos into one
-# 7. Find best frame for a second along with timestamp
+# 1. early stop function run_hyperopt - DONE
+# 2. pytest - for each function - change './\
+# 3. Read on how to get hamming loss
+# 4. Save the stratified graph image
+# 5. Coallesce many videos into one
+# 6. Find best frame for a second along with timestamp
+# 7. train on more data
