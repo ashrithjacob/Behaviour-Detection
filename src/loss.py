@@ -6,6 +6,8 @@ import xgboost as xgb
 import mlflow
 from sklearn.metrics import classification_report
 
+
+# TODO hamming is loss/ number of labels. Need to change this
 loss = lambda y, y_pred: np.sum(abs(np.subtract(np.array(y), np.array(y_pred))))
 remove_first_col = (
     lambda df: df[[df.columns[i] for i in range(len(df.columns)) if i != 0]]
@@ -128,11 +130,3 @@ def generate_metric(run_id):
         mlflow.log_metric("micro precision", report_dict["micro avg"]["precision"])
         mlflow.log_metric("micro recall", report_dict["micro avg"]["recall"])
         mlflow.log_metric("micro F1 score", report_dict["micro avg"]["f1-score"])
-
-
-# generate_metric()
-# TODO:
-# add early stopping and best_params
-# print frame name along with accuracy/frame - done
-
-# Next:
