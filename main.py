@@ -40,7 +40,13 @@ Functions:
 
 space = constants.param["space"] | constants.param["const"]  # needs python 3.9+
 
-
+"""
+creates data frame from csv files
+returns: x, y, y_full
+x: data frame containing object's presence/absence in each frame
+y: data frame containing labels for each frame
+y_full: data frame containing labels for each frame and file name
+"""
 def create_df():
     # getting all files in folder in alphabetical order
     files = sorted(os.listdir(constants.path_to_y))
@@ -65,7 +71,9 @@ def create_df():
     y = remove_first_col(y_full)
     return x, y, y_full
 
-
+"""
+saves numpy array and dataframe to csv file
+"""
 def create_csv(*files):
     for file in files:
         # get name of file
@@ -75,7 +83,9 @@ def create_csv(*files):
         elif isinstance(file, np.ndarray):
             np.savetxt("labels/" + str(name) + ".csv", y_pred, delimiter=",")
 
-
+"""
+display gradients and hessians
+"""
 def display(g, h, y_pred):
     print("y_test", constants.data["d_test"].get_label())
     print("Y_pred", y_pred.flatten())
@@ -83,27 +93,28 @@ def display(g, h, y_pred):
     print("G,H shapes", g.shape, h.shape)
     print("G,H types", g.dtype, h.dtype)
 
-
-def dump(obj):
-    for attr in dir(obj):
-        if hasattr(obj, attr):
-            print("obj.%s = %s" % (attr, getattr(obj, attr)))
-
-
+"""
+create dmatrix for xgboost
+"""
 def init_dmatrix(x_train, x_test, y_train, y_test):
     constants.data["y_test"] = y_test
     constants.data["d_train"] = xgb.DMatrix(x_train, y_train)
     constants.data["d_test"] = xgb.DMatrix(x_test, y_test)
     constants.data["d_test_feature"] = xgb.DMatrix(x_test)
 
-
+"""
+get frame_name from y_full for only the test data
+"""
 def get_frame(y_full, y_test):
     row_name = []
     for row in y_test.index:
         row_name.append(row)
     return y_full.iloc[row_name, :]
 
-
+"""
+perform xgboost regression
+returns: boosted_tree
+"""
 def d_matrix():
     num_round = constants.number_of_trees
     watchlist = [
@@ -120,7 +131,9 @@ def d_matrix():
     )
     return boosted_tree
 
-
+"""
+objective function for hyperopt
+"""
 def objective(space):
     num_round = constants.number_of_trees
     params = list(space.items())
@@ -136,7 +149,9 @@ def objective(space):
     y_test = constants.data["y_test"]
     return {"loss": loss(y_test, y_pred), "status": STATUS_OK}
 
-
+""""
+use hyperopt to find best parameters
+"""
 def run_hyperopt(
     objective,
     space,
@@ -164,7 +179,9 @@ def run_hyperopt(
         print(e)
         return (False, "Optimization Failed:\n{}".format(e), None, None)
 
-
+"""
+parse command line arguments
+"""
 def parse_opt():
     parser = argparse.ArgumentParser(
         prog="XGB with hyperopt",
@@ -185,8 +202,14 @@ def parse_opt():
         action="store_true",
         help="use custom objective function and eval metric",
     )
+    parser.add_argument(
+        "-gr",
+        "--gradient",
+        action="store_true",
+        help="display gradient and hessian",
+    )
     args = parser.parse_args()
-    return args.hyperopt, args.bestparam, args.custom
+    return args.hyperopt, args.bestparam, args.custom, args.gradient
 
 
 if __name__ == "__main__":
@@ -203,7 +226,7 @@ if __name__ == "__main__":
     # create a D_Matrix represetation for required data
     init_dmatrix(x_train, x_test, y_train, y_test)
     # get parser
-    hyperopt_arg, best_param_arg, custom_arg = parse_opt()
+    hyperopt_arg, best_param_arg, custom_arg, disp_gradient = parse_opt()
     if hyperopt_arg:
         status, message, best, processing_time = run_hyperopt(
             objective=objective,
@@ -256,9 +279,10 @@ if __name__ == "__main__":
     y_pred = (
         model.predict(constants.data["d_test_feature"], strict_shape=True) > 0.5
     ).astype(int)
-    # gradient and hessian (TODO move to test)
-    g, h = custom_rmse(y_pred, constants.data["d_test"])
-    display(g, h, y_pred1)
+    if disp_gradient:
+        # gradient and hessian (set to user to print)
+        g, h = custom_rmse(y_pred, constants.data["d_test"])
+        display(g, h, y_pred1)
     # hamming loss
     print("Hamming loss is:", loss(y_test, y_pred))
     # get y_test df with image name
