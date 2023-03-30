@@ -109,7 +109,7 @@ def generate_metric(run_id):
     file.write("Accuracy per label:\n")
     for i in range(cols):
         file.write(str(constants.labels[i]) + ":")
-        file.write(str(y_diff.sum(axis=0)[i]))
+        file.write(str((1.0-y_diff.sum(axis=0)[i]/len(y_diff))*100))
         file.write("\n")
     file.write("\n")
     # writing hamming loss

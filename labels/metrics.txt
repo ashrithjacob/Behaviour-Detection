@@ -201,9 +201,9 @@ frame_Giving_money_vid_1140.csv:0.0
 frame_Giving_money_vid_2100.csv:0.0
 
 Accuracy per label:
-food:0.0
-media:69.0
-transactions:118.0
+food:100.0
+media:65.5
+transactions:41.0
 
 Total hamming loss:96.0
 Hamming percentage:16.0

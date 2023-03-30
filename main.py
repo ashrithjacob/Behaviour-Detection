@@ -236,22 +236,7 @@ def parse_opt():
     args = parser.parse_args()
     return args.hyperopt, args.bestparam, args.custom, args.gradient
 
-
-if __name__ == "__main__":
-    x, y, y_full = create_df()
-    # split test and train
-    x_train, x_test, y_train, y_test = train_test_split(
-        x,
-        y,
-        test_size=constants.test_split,
-        random_state=constants.random_state,
-        shuffle=True,
-        stratify=y,
-    )
-    # create a D_Matrix represetation for required data
-    init_dmatrix(x_train, x_test, y_train, y_test)
-    # get parser
-    hyperopt_arg, best_param_arg, custom_arg, disp_gradient = parse_opt()
+def conditions_parser(hyperopt_arg, best_param_arg, custom_arg, gradient_arg):
     if hyperopt_arg:
         status, message, best, processing_time = run_hyperopt(
             objective=objective,
@@ -290,6 +275,30 @@ if __name__ == "__main__":
             + "_"
             + constants.best_param[0]["eval_metric"]
         )
+    if disp_gradient:
+        # gradient and hessian (set to user to print)
+        g, h = custom_rmse(y_pred, constants.data["d_test"])
+        display(g, h, y_pred1)
+    return run_name
+
+
+if __name__ == "__main__":
+    x, y, y_full = create_df()
+    # split test and train
+    x_train, x_test, y_train, y_test = train_test_split(
+        x,
+        y,
+        test_size=constants.test_split,
+        random_state=constants.random_state,
+        shuffle=True,
+        stratify=y,
+    )
+    # create a D_Matrix represetation for required data
+    init_dmatrix(x_train, x_test, y_train, y_test)
+    # get parser
+    hyperopt_arg, best_param_arg, custom_arg, disp_gradient = parse_opt()
+    # run as per parser
+    run_name=conditions_parser(hyperopt_arg, best_param_arg, custom_arg, disp_gradient)
     # log params
     with mlflow.start_run(run_name=str(run_name)) as run:
         run_id = run.info.run_id
@@ -303,10 +312,6 @@ if __name__ == "__main__":
     y_pred = (
         model.predict(constants.data["d_test_feature"], strict_shape=True) > 0.5
     ).astype(int)
-    if disp_gradient:
-        # gradient and hessian (set to user to print)
-        g, h = custom_rmse(y_pred, constants.data["d_test"])
-        display(g, h, y_pred1)
     # hamming loss
     print("Hamming loss is:", loss(y_test, y_pred))
     # get y_test df with image name

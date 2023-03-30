@@ -33,6 +33,10 @@ a. Jupyter notebook to print statified split between different labels
 b. Fix accuracy of each label in `metrics.txt`
 c. DART in xgboost
 
+## choosing frames
+Get videos from:
+https://stock.adobe.com/video
+
 1. How to choose best frames and split (Below is what chat GPT3 had to say)\
    There are a few different strategies you might use to choose the best frames from a video for computer vision tasks:\
 
@@ -74,7 +78,7 @@ Ultimately, the best strategy for choosing frames will depend on the specific go
   how many of each class exists
 - Custom training: https://colab.research.google.com/github/roboflow-ai/yolov5-custom-training-tutorial/blob/main/yolov5-custom-training.ipynb
 
-  4 - Label frames (not on objects but on behaviour)
+4 - Label frames (not on objects but on behaviour)
   Use the flask application built to do labelling
 
 5 - Train on the data
@@ -94,10 +98,6 @@ Read about autoencoders
 - Read data from yolov5
 - trials.trials?
 
-
-## Pytest:
-
-- Problems identifying xgboost and hyperopt packages
 
 ## Objective function and hyperopt
 
