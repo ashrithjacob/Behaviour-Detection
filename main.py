@@ -236,7 +236,7 @@ def parse_opt():
     args = parser.parse_args()
     return args.hyperopt, args.bestparam, args.custom, args.gradient
 
-def conditions_parser(hyperopt_arg, best_param_arg, custom_arg, gradient_arg):
+def conditions_parser(hyperopt_arg, best_param_arg, custom_arg, disp_gradient):
     if hyperopt_arg:
         status, message, best, processing_time = run_hyperopt(
             objective=objective,

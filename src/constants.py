@@ -15,7 +15,9 @@ number_of_trees = 1000
 param = {
     "space": {
         "learning_rate": hp.quniform("learning_rate", 0.1, 0.6, 0.1),
-        "max_depth": hp.randint("max_depth", 3, 10),
+        # better option:
+        # max_depth:hp.quniform("max_depth", 3, 8, 1){fix to get integer values}
+        "max_depth": hp.randint("max_depth", 3, 8),
         "subsample": hp.quniform("subsample", 0.5, 1, 0.05),
         "colsample_bytree": hp.quniform("colsample_bytree", 0.5, 1, 0.1),
         "gamma": hp.quniform("gamma", 0, 1, 0.05),
