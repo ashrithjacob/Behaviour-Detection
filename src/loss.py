@@ -67,7 +67,7 @@ def pseudo_huber_loss_eval(
 ) -> tuple[str, float]:
     d = y_pred.flatten() - y_test.get_label()
     delta = 1
-    return "psuedo-huber-loss", float(
+    return "psuedo-huber-lossww", float(
         np.sum(delta**2 * np.sqrt(1 + (d / delta) ** 2) - 1)
     )
 

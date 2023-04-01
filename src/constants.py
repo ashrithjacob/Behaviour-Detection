@@ -28,7 +28,7 @@ param = {
         #'max_bin': max_bin,
         "n_estimators": number_of_trees,
         "booster": "gbtree",
-        #'tree_method': tree_method,
+        #'tree_method': 'hist',
         "silent": 1,
         "nthread": -1,
         #'seed': seed_value,
@@ -40,8 +40,8 @@ param = {
     },
     "custom": {
         "disable_default_eval_metric": 1,
-        "obj": pseudo_huber_loss,
-        "feval": pseudo_huber_loss_eval,
+        #"obj": pseudo_huber_loss,
+        #"custom_metric": pseudo_huber_loss_eval,
     },
 }
 
@@ -97,3 +97,5 @@ best_param = {
         "subsample": 0.65,
     },
 }
+
+test_param = best_param[1]|param['const']|param['custom']
