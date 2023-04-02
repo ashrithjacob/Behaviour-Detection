@@ -140,11 +140,11 @@ def d_matrix():
     ]
     print("loading data end, start to boost trees")
     boosted_tree = xgb.train(
-        constants.test_param,
+        constants.best_param[0],
         constants.data["d_train"],
         num_round,
-        obj=pseudo_huber_loss,
-        custom_metric=pseudo_huber_loss_eval,
+        #obj=pseudo_huber_loss,
+        #custom_metric=pseudo_huber_loss_eval,
         evals=watchlist,
         verbose_eval=100,
     )
