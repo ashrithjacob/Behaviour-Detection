@@ -1,3 +1,8 @@
+"""
+The function converts labels from mutiple labels to one label
+Eg: 0: 1 penny, 1 : 1 dollar, 2: 10 dollars can all be converted to a single label: money
+just list the labels to be merged in l1 list
+"""
 import os
 
 folder = "data/cash_denominations"
