@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ashrith/github/behaviour_project/mlruns/0/47ebe9c42c5640d28977d0a4a98fcf23/artifacts
+end_time: 1685543977208
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 47ebe9c42c5640d28977d0a4a98fcf23
+run_name: reg:pseudohubererror_mphe
+run_uuid: 47ebe9c42c5640d28977d0a4a98fcf23
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1685543965388
+status: 3
+tags: []
+user_id: ashrith
