@@ -12,6 +12,7 @@ labels = ["food", "media", "transactions"]
 test_split = 0.2
 random_state = 42
 number_of_trees = 1000
+model_file_name = "local-xgboost-model"
 param = {
     "space": {
         "learning_rate": hp.quniform("learning_rate", 0.1, 0.6, 0.1),

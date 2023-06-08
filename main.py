@@ -323,8 +323,7 @@ if __name__ == "__main__":
     # generate 'labels/metrics.txt'
     generate_metric(run_id)
     # save model
-    model_file_name = "local-xgboost-model"
-    model.save_model(model_file_name)
+    model.save_model(constants.model_file_name)
 
 # TODO:
 # 1. early stop function run_hyperopt - DONE
