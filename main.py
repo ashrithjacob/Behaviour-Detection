@@ -315,7 +315,9 @@ if __name__ == "__main__":
         model.predict(constants.data["d_test_feature"], strict_shape=True) > 0.5
     ).astype(int)
     # hamming loss
-    print("Hamming loss is:", loss(y_test, y_pred))
+    print("Pseudo huber loss is:", loss(y_test, y_pred))
+    accuracy = 1 - loss(y_test, y_pred)/(constants.test_split*constants.number_of_trees*len(constants.labels))
+    print(f"Accuracy on test data:{accuracy*100}%")
     # get y_test df with image name
     y_full_test = get_frame(y_full, y_test)
     # write parsed args to csv
