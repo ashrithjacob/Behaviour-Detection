@@ -11,7 +11,7 @@ def model_fn(model_dir):
     """
     Deserialize and return fitted model.
     """
-    model_file = "xgboost-model"
+    model_file = "DEMO-local-xgboost"
     booster = pkl.load(open(os.path.join(model_dir, model_file), "rb"))
     return booster
 
@@ -23,8 +23,8 @@ def input_fn(request_body, request_content_type):
 
     Return a DMatrix (an object that can be passed to predict_fn).
     """
-    if request_content_type == "text/libsvm":
-        return xgb_encoders.libsvm_to_dmatrix(request_body)
+    if request_content_type == "text/csv":
+        return xgb_encoders.csv_to_dmatrix(request_body)
     else:
         raise ValueError(
             "Content type {} is not supported.".format(request_content_type)
